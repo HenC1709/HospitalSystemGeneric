@@ -14,42 +14,42 @@
         <Border Grid.Column="0" Style="{StaticResource HospitalHoverCardStyle}" VerticalAlignment="Top">
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <Border Width="30" Height="30" CornerRadius="8" Background="{StaticResource HospitalSuccessSoftBrush}" Margin="0,0,10,0">
-                        <ui:SymbolIcon Symbol="Stethoscope24" Foreground="{StaticResource HospitalSuccessBrush}" />
+                    <Border Width="30" Height="30" CornerRadius="8" Background="{DynamicResource HospitalSuccessSoftBrush}" Margin="0,0,10,0">
+                        <ui:SymbolIcon Symbol="Stethoscope24" Foreground="{DynamicResource HospitalSuccessBrush}" />
                     </Border>
                     <TextBlock
                         Text="Incorporar Especialista"
                         FontSize="16"
                         FontWeight="Bold"
                         VerticalAlignment="Center"
-                        Foreground="{StaticResource HospitalTextPrimaryBrush}" />
+                        Foreground="{DynamicResource HospitalTextPrimaryBrush}" />
                 </StackPanel>
 
-                <TextBlock Text="Cédula Profesional *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <TextBlock Text="Cédula Profesional *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                 <ui:TextBox
                     Margin="0,0,0,10"
                     PlaceholderText="Ej. MP-60120"
                     Text="{Binding NuevoMedicoCedula, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBlock Text="Nombres Completos *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <TextBlock Text="Nombres Completos *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                 <ui:TextBox
                     Margin="0,0,0,10"
                     PlaceholderText="Ej. Dra. Elena Vargas"
                     Text="{Binding NuevoMedicoNombres, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBlock Text="Especialidad Médica *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <TextBlock Text="Especialidad Médica *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                 <ui:TextBox
                     Margin="0,0,0,10"
                     PlaceholderText="Ej. Neumología Clínica"
                     Text="{Binding NuevoMedicoEspecialidad, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBlock Text="Turno Asignado" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <TextBlock Text="Turno Asignado" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                 <ComboBox
                     Margin="0,0,0,10"
                     ItemsSource="{Binding OpcionesTurno}"
                     SelectedItem="{Binding NuevoMedicoTurno}" />
 
-                <TextBlock Text="Consultorio / Pabellón" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <TextBlock Text="Consultorio / Pabellón" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                 <ui:TextBox
                     Margin="0,0,0,10"
                     PlaceholderText="Ej. Consultorio 210"
@@ -85,7 +85,7 @@
                         Text="Médicos del Día y Cuerpo Facultativo"
                         FontSize="16"
                         FontWeight="Bold"
-                        Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                        Foreground="{DynamicResource HospitalTextPrimaryBrush}"
                         VerticalAlignment="Center" />
                     <CheckBox
                         DockPanel.Dock="Right"

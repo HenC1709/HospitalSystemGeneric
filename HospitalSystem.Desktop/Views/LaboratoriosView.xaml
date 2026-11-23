@@ -16,38 +16,38 @@
                 <Border Style="{StaticResource HospitalHoverCardStyle}" Margin="0,0,0,12">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                            <Border Width="30" Height="30" CornerRadius="8" Background="{StaticResource HospitalWarningSoftBrush}" Margin="0,0,10,0">
-                                <ui:SymbolIcon Symbol="Beaker24" Foreground="{StaticResource HospitalWarningBrush}" />
+                            <Border Width="30" Height="30" CornerRadius="8" Background="{DynamicResource HospitalWarningSoftBrush}" Margin="0,0,10,0">
+                                <ui:SymbolIcon Symbol="Beaker24" Foreground="{DynamicResource HospitalWarningBrush}" />
                             </Border>
                             <TextBlock
                                 Text="Orden de Salida a Laboratorio"
                                 FontSize="16"
                                 FontWeight="Bold"
                                 VerticalAlignment="Center"
-                                Foreground="{StaticResource HospitalTextPrimaryBrush}" />
+                                Foreground="{DynamicResource HospitalTextPrimaryBrush}" />
                         </StackPanel>
 
-                        <TextBlock Text="Paciente en Atención *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <TextBlock Text="Paciente en Atención *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                         <ComboBox
                             Margin="0,0,0,10"
                             ItemsSource="{Binding PacientesActivosSelector}"
                             SelectedItem="{Binding PacienteParaLabSeleccionado}"
                             DisplayMemberPath="Nombres" />
 
-                        <TextBlock Text="Unidad de Laboratorio *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <TextBlock Text="Unidad de Laboratorio *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                         <ComboBox
                             Margin="0,0,0,10"
                             ItemsSource="{Binding Laboratorios}"
                             SelectedItem="{Binding LaboratorioSalidaSeleccionado}"
                             DisplayMemberPath="EtiquetaSelector" />
 
-                        <TextBlock Text="Estudio / Examen Solicitado *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <TextBlock Text="Estudio / Examen Solicitado *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                         <ui:TextBox
                             Margin="0,0,0,10"
                             PlaceholderText="Ej. TAC Torácico / Hemocultivo"
                             Text="{Binding ExamenSalidaLab, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <TextBlock Text="Justificación Clínica / Síntomas *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <TextBlock Text="Justificación Clínica / Síntomas *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                         <ui:TextBox
                             Margin="0,0,0,10"
                             Height="62"
@@ -55,7 +55,7 @@
                             TextWrapping="Wrap"
                             Text="{Binding MotivoSalidaLab, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <TextBlock Text="Prioridad" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <TextBlock Text="Prioridad" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                         <ComboBox
                             Margin="0,0,0,14"
                             ItemsSource="{Binding OpcionesPrioridad}"
@@ -79,7 +79,7 @@
                             Text="Informe de Resultado al Retornar"
                             FontSize="14"
                             FontWeight="Bold"
-                            Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                            Foreground="{DynamicResource HospitalTextPrimaryBrush}"
                             Margin="0,0,0,8" />
                         <ui:TextBox
                             Height="58"
@@ -104,7 +104,7 @@
                     Text="Trazabilidad de Salidas a Laboratorios Clínicos"
                     FontSize="16"
                     FontWeight="Bold"
-                    Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                    Foreground="{DynamicResource HospitalTextPrimaryBrush}"
                     Margin="0,0,0,12" />
 
                 <DataGrid
@@ -122,8 +122,8 @@
                         <DataGridTemplateColumn Header="Prioridad" Width="90">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Background="{StaticResource HospitalWarningSoftBrush}" CornerRadius="10" Padding="8,2" HorizontalAlignment="Left">
-                                        <TextBlock Text="{Binding Prioridad}" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource HospitalWarningBrush}" />
+                                    <Border Background="{DynamicResource HospitalWarningSoftBrush}" CornerRadius="10" Padding="8,2" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding Prioridad}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource HospitalWarningBrush}" />
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

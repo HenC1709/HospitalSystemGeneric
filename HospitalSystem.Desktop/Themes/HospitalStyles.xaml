@@ -1,13 +1,15 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Paleta Clínica Hospitalaria -->
+    <!-- Paleta Clínica Hospitalaria (Actualizable en caliente con DynamicResource) -->
     <SolidColorBrush x:Key="HospitalBgBrush" Color="#F0F6FA" />
     <SolidColorBrush x:Key="HospitalSurfaceBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="HospitalNavbarBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="HospitalBorderBrush" Color="#D5E5F2" />
+    <SolidColorBrush x:Key="HospitalSubPanelBrush" Color="#F4FAFF" />
+    <SolidColorBrush x:Key="HospitalSecondaryBtnBgBrush" Color="#F8FBFE" />
+    <SolidColorBrush x:Key="HospitalTabHoverBrush" Color="#EDF6FC" />
 
     <SolidColorBrush x:Key="HospitalPrimaryBrush" Color="#0284C7" />
     <SolidColorBrush x:Key="HospitalPrimaryHoverBrush" Color="#0369A1" />
@@ -27,11 +29,17 @@
     <SolidColorBrush x:Key="HospitalTextPrimaryBrush" Color="#0F2942" />
     <SolidColorBrush x:Key="HospitalTextMutedBrush" Color="#526D82" />
 
-    <!-- Botón Clínico Principal con Hover de Color, Escala Suave y Presión -->
+    <!-- Gradiente de Identidad Hospitalaria (Usado en el Diálogo de Exportación PDF/Ticket) -->
+    <LinearGradientBrush x:Key="HospitalBrandGradientBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#0284C7" Offset="0.0" />
+        <GradientStop Color="#0D9488" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Botón Clínico Principal con Hover y Escala Suave -->
     <Style x:Key="HospitalPrimaryButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource HospitalPrimaryBrush}" />
+        <Setter Property="Background" Value="{DynamicResource HospitalPrimaryBrush}" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="BorderBrush" Value="{StaticResource HospitalPrimaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource HospitalPrimaryBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Padding" Value="14,8" />
         <Setter Property="FontWeight" Value="SemiBold" />
@@ -56,7 +64,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BtnBorder" Property="Background" Value="{StaticResource HospitalPrimaryHoverBrush}" />
+                            <Setter TargetName="BtnBorder" Property="Background" Value="{DynamicResource HospitalPrimaryHoverBrush}" />
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -75,7 +83,7 @@
                             </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Opacity" Value="0.9" />
+                            <Setter Property="Opacity" Value="0.88" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.45" />
@@ -86,13 +94,13 @@
         </Setter>
     </Style>
 
-    <!-- Botón Clínico Secundario / Outline con Hover Celeste Hospital -->
+    <!-- Botón Clínico Secundario Adaptable a Modo Claro y Oscuro -->
     <Style x:Key="HospitalSecondaryButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="#F8FBFE" />
-        <Setter Property="Foreground" Value="{StaticResource HospitalPrimaryBrush}" />
-        <Setter Property="BorderBrush" Value="#BAE0F5" />
+        <Setter Property="Background" Value="{DynamicResource HospitalSecondaryBtnBgBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource HospitalPrimaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource HospitalBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="Padding" Value="11,6" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
@@ -115,8 +123,8 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="SecBorder" Property="Background" Value="{StaticResource HospitalPrimarySoftBrush}" />
-                            <Setter TargetName="SecBorder" Property="BorderBrush" Value="{StaticResource HospitalPrimaryBrush}" />
+                            <Setter TargetName="SecBorder" Property="Background" Value="{DynamicResource HospitalPrimarySoftBrush}" />
+                            <Setter TargetName="SecBorder" Property="BorderBrush" Value="{DynamicResource HospitalPrimaryBrush}" />
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -143,12 +151,12 @@
         </Setter>
     </Style>
 
-    <!-- Botón de Pestaña del Navbar Superior con Indicador Activo y Hover -->
+    <!-- Pestaña del Navbar Superior con Indicador Activo y Hover -->
     <Style x:Key="HospitalNavTabButtonStyle" TargetType="RadioButton">
-        <Setter Property="Foreground" Value="{StaticResource HospitalTextMutedBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource HospitalTextMutedBrush}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Padding" Value="14,8" />
-        <Setter Property="Margin" Value="3,0" />
+        <Setter Property="Padding" Value="13,8" />
+        <Setter Property="Margin" Value="2,0" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
@@ -174,13 +182,13 @@
                             Margin="12,0,12,1"
                             VerticalAlignment="Bottom"
                             CornerRadius="2"
-                            Background="{StaticResource HospitalPrimaryBrush}"
+                            Background="{DynamicResource HospitalPrimaryBrush}"
                             Opacity="0" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="TabBg" Property="Background" Value="#EDF6FC" />
-                            <Setter Property="Foreground" Value="{StaticResource HospitalPrimaryBrush}" />
+                            <Setter TargetName="TabBg" Property="Background" Value="{DynamicResource HospitalTabHoverBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource HospitalPrimaryBrush}" />
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -197,8 +205,8 @@
                             </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="TabBg" Property="Background" Value="{StaticResource HospitalPrimarySoftBrush}" />
-                            <Setter Property="Foreground" Value="{StaticResource HospitalPrimaryHoverBrush}" />
+                            <Setter TargetName="TabBg" Property="Background" Value="{DynamicResource HospitalPrimarySoftBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource HospitalPrimaryBrush}" />
                             <Setter TargetName="ActiveBar" Property="Opacity" Value="1" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -207,10 +215,10 @@
         </Setter>
     </Style>
 
-    <!-- Tarjeta KPI con Elevación Animada en Hover -->
+    <!-- Tarjeta Clínica con Elevación Animada en Hover -->
     <Style x:Key="HospitalHoverCardStyle" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource HospitalSurfaceBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource HospitalBorderBrush}" />
+        <Setter Property="Background" Value="{DynamicResource HospitalSurfaceBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource HospitalBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="12" />
         <Setter Property="Padding" Value="16" />
@@ -221,7 +229,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="#7DD3FC" />
+                <Setter Property="BorderBrush" Value="{DynamicResource HospitalPrimaryBrush}" />
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>

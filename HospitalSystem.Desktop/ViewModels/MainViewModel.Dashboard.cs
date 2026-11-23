@@ -35,11 +35,15 @@ public sealed partial class MainViewModel
 
     public string EtiquetaMySqlNavbar => ConectadoMySql ? "MySQL Conectado" : "Modo Memoria";
     public Brush ColorPuntoMySql => ConectadoMySql
-        ? new SolidColorBrush(Color.FromRgb(5, 150, 105))
-        : new SolidColorBrush(Color.FromRgb(217, 119, 6));
-    public Brush FondoBadgeMySql => ConectadoMySql
-        ? new SolidColorBrush(Color.FromRgb(209, 250, 229))
-        : new SolidColorBrush(Color.FromRgb(254, 243, 199));
+        ? new SolidColorBrush(Color.FromRgb(16, 185, 129))
+        : new SolidColorBrush(Color.FromRgb(245, 158, 11));
+    public Brush FondoBadgeMySql => (ConectadoMySql, ModoOscuroActivo) switch
+    {
+        (true, false)  => new SolidColorBrush(Color.FromRgb(209, 250, 229)),
+        (true, true)   => new SolidColorBrush(Color.FromRgb(14, 60, 47)),
+        (false, false) => new SolidColorBrush(Color.FromRgb(254, 243, 199)),
+        (false, true)  => new SolidColorBrush(Color.FromRgb(69, 48, 14))
+    };
 
     public string OrigenDatosTexto { get; set => SetProperty(ref field, value); } = "Verificando conexión...";
     public string MensajeEstado { get; set => SetProperty(ref field, value); } = "Sistema hospitalario listo (solo datos ficticios).";

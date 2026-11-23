@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HospitalSystem.Application.Services;
 using HospitalSystem.Core.Enums;
+using HospitalSystem.Desktop.Themes;
 
 namespace HospitalSystem.Desktop.ViewModels;
 
@@ -26,15 +27,17 @@ public enum SeveridadFeedback
 }
 
 /// <summary>
-/// Núcleo de MainViewModel: navegación del Navbar, sistema de notificaciones clínicas
-/// y utilidades comunes (los módulos específicos residen en sus archivos parciales).
+/// Núcleo de MainViewModel: navegación del Navbar, Modo Oscuro/Claro,
+/// sistema de notificaciones clínicas y utilidades comunes.
 /// </summary>
 public sealed partial class MainViewModel : ObservableObject
 {
     private readonly HospitalServices _services;
+    private SeveridadFeedback _ultimaSeveridad = SeveridadFeedback.Informacion;
 
     public event Action? VistaCambiada;
     public event Action? FeedbackActualizado;
+    public event Action? DialogoExportacionAbierto;
 
     public MainViewModel(HospitalServices services)
     {
@@ -42,6 +45,41 @@ public sealed partial class MainViewModel : ObservableObject
         CadenaConexion = services.CadenaConexionActual;
     }
 
+    // =========================================================================
+    // Modo Oscuro / Modo Claro Clínico
+    // =========================================================================
+    public bool ModoOscuroActivo
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                HospitalThemeManager.AplicarTema(value);
+                OnPropertyChanged(nameof(EtiquetaBotonTema));
+                OnPropertyChanged(nameof(FondoBadgeMySql));
+                ActualizarColoresFeedbackSegunTema(_ultimaSeveridad);
+            }
+        }
+    }
+
+    public string EtiquetaBotonTema => ModoOscuroActivo ? "Modo Claro" : "Modo Oscuro";
+
+    [RelayCommand]
+    private void AlternarModoOscuro()
+    {
+        ModoOscuroActivo = !ModoOscuroActivo;
+        Notificar(
+            SeveridadFeedback.Informacion,
+            ModoOscuroActivo ? "Modo Oscuro Activado" : "Modo Claro Clínico Activado",
+            ModoOscuroActivo
+                ? "Interfaz adaptada para turnos nocturnos y baja fatiga visual."
+                : "Interfaz restaurada a tonos clínicos luminosos de alta legibilidad.");
+    }
+
+    // =========================================================================
+    // Navegación del Navbar
+    // =========================================================================
     public SeccionMenu SeccionActual
     {
         get;
@@ -86,7 +124,9 @@ public sealed partial class MainViewModel : ObservableObject
     public IReadOnlyList<TurnoMedico> OpcionesTurno { get; } = Enum.GetValues<TurnoMedico>();
     public IReadOnlyList<PrioridadLaboratorio> OpcionesPrioridad { get; } = Enum.GetValues<PrioridadLaboratorio>();
 
-    // Banner Clínico Animado de Feedback
+    // =========================================================================
+    // Banner Clínico Animado de Feedback (Adaptable a Modo Claro y Oscuro)
+    // =========================================================================
     public bool FeedbackVisible { get; set => SetProperty(ref field, value); } = true;
     public string FeedbackTitulo { get; set => SetProperty(ref field, value); } = "Entorno de Demostración Inicializado";
     public string FeedbackDetalle { get; set => SetProperty(ref field, value); } = "Utiliza exclusivamente datos ficticios. Puedes probar tu conexión MySQL desde Resumen General.";
@@ -97,35 +137,36 @@ public sealed partial class MainViewModel : ObservableObject
 
     private void Notificar(SeveridadFeedback severidad, string titulo, string detalle)
     {
-        var (fondo, borde, texto) = severidad switch
-        {
-            SeveridadFeedback.Exito => (
-                Color.FromRgb(209, 250, 229),
-                Color.FromRgb(5, 150, 105),
-                Color.FromRgb(6, 95, 70)),
-            SeveridadFeedback.Advertencia => (
-                Color.FromRgb(254, 243, 199),
-                Color.FromRgb(217, 119, 6),
-                Color.FromRgb(146, 64, 14)),
-            SeveridadFeedback.Error => (
-                Color.FromRgb(254, 226, 226),
-                Color.FromRgb(220, 38, 38),
-                Color.FromRgb(153, 27, 27)),
-            _ => (
-                Color.FromRgb(224, 242, 254),
-                Color.FromRgb(2, 132, 199),
-                Color.FromRgb(12, 74, 110))
-        };
-
-        FeedbackFondoBrush = new SolidColorBrush(fondo);
-        FeedbackBordeBrush = new SolidColorBrush(borde);
-        FeedbackTextoBrush = new SolidColorBrush(texto);
+        _ultimaSeveridad = severidad;
+        ActualizarColoresFeedbackSegunTema(severidad);
         FeedbackTitulo = titulo;
         FeedbackDetalle = detalle;
         FeedbackHora = DateTime.Now.ToString("HH:mm:ss");
         FeedbackVisible = true;
         MensajeEstado = $"{titulo}: {detalle}";
         FeedbackActualizado?.Invoke();
+    }
+
+    private void ActualizarColoresFeedbackSegunTema(SeveridadFeedback severidad)
+    {
+        var (fondo, borde, texto) = (severidad, ModoOscuroActivo) switch
+        {
+            (SeveridadFeedback.Exito, false) => (Color.FromRgb(209, 250, 229), Color.FromRgb(5, 150, 105), Color.FromRgb(6, 95, 70)),
+            (SeveridadFeedback.Exito, true)  => (Color.FromRgb(14, 60, 47), Color.FromRgb(52, 211, 153), Color.FromRgb(209, 250, 229)),
+
+            (SeveridadFeedback.Advertencia, false) => (Color.FromRgb(254, 243, 199), Color.FromRgb(217, 119, 6), Color.FromRgb(146, 64, 14)),
+            (SeveridadFeedback.Advertencia, true)  => (Color.FromRgb(69, 48, 14), Color.FromRgb(251, 191, 36), Color.FromRgb(254, 243, 199)),
+
+            (SeveridadFeedback.Error, false) => (Color.FromRgb(254, 226, 226), Color.FromRgb(220, 38, 38), Color.FromRgb(153, 27, 27)),
+            (SeveridadFeedback.Error, true)  => (Color.FromRgb(72, 24, 29), Color.FromRgb(248, 113, 113), Color.FromRgb(254, 226, 226)),
+
+            (_, false) => (Color.FromRgb(224, 242, 254), Color.FromRgb(2, 132, 199), Color.FromRgb(12, 74, 110)),
+            (_, true)  => (Color.FromRgb(18, 56, 86), Color.FromRgb(56, 189, 248), Color.FromRgb(224, 242, 254))
+        };
+
+        FeedbackFondoBrush = new SolidColorBrush(fondo);
+        FeedbackBordeBrush = new SolidColorBrush(borde);
+        FeedbackTextoBrush = new SolidColorBrush(texto);
     }
 
     [RelayCommand]

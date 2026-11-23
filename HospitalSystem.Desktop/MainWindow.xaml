@@ -5,14 +5,14 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:views="clr-namespace:HospitalSystem.Desktop.Views"
     Title="HospitalSystem — Gestión Clínica y Pruebas MySQL"
-    Width="1360"
-    Height="840"
-    MinWidth="1100"
+    Width="1380"
+    Height="845"
+    MinWidth="1120"
     MinHeight="700"
-    Background="{StaticResource HospitalBgBrush}"
+    Background="{DynamicResource HospitalBgBrush}"
     ExtendsContentIntoTitleBar="True"
     WindowStartupLocation="CenterScreen">
-    <Grid Background="{StaticResource HospitalBgBrush}">
+    <Grid Background="{DynamicResource HospitalBgBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -29,10 +29,10 @@
         <!-- NAVBAR HOSPITALARIO SUPERIOR -->
         <Border
             Grid.Row="1"
-            Background="{StaticResource HospitalNavbarBrush}"
-            BorderBrush="{StaticResource HospitalBorderBrush}"
+            Background="{DynamicResource HospitalNavbarBrush}"
+            BorderBrush="{DynamicResource HospitalBorderBrush}"
             BorderThickness="0,0,0,1"
-            Padding="18,10">
+            Padding="16,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -46,7 +46,7 @@
                         Width="38"
                         Height="38"
                         CornerRadius="10"
-                        Background="{StaticResource HospitalPrimaryBrush}"
+                        Background="{StaticResource HospitalBrandGradientBrush}"
                         Margin="0,0,10,0">
                         <ui:SymbolIcon Symbol="HeartPulse24" Foreground="White" FontSize="20" />
                     </Border>
@@ -55,15 +55,15 @@
                             Text="HOSPITAL SAN LUCAS"
                             FontSize="14"
                             FontWeight="Bold"
-                            Foreground="{StaticResource HospitalTextPrimaryBrush}" />
+                            Foreground="{DynamicResource HospitalTextPrimaryBrush}" />
                         <TextBlock
                             Text="Gestión Clínica &amp; MySQL Lab"
                             FontSize="11"
-                            Foreground="{StaticResource HospitalTextMutedBrush}" />
+                            Foreground="{DynamicResource HospitalTextMutedBrush}" />
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Pestañas de Navegación Centrales con Hover y Subrayado Activo -->
+                <!-- Pestañas Centrales del Navbar -->
                 <StackPanel
                     Grid.Column="1"
                     Orientation="Horizontal"
@@ -106,33 +106,32 @@
                     </RadioButton>
                 </StackPanel>
 
-                <!-- Píldoras KPI en Vivo + Estado MySQL + Botón Actualizar -->
+                <!-- Píldoras KPI + Estado MySQL + Modo Oscuro + Refrescar -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Background="{StaticResource HospitalTealSoftBrush}" CornerRadius="14" Padding="10,5" Margin="0,0,6,0">
+                    <Border Background="{DynamicResource HospitalTealSoftBrush}" CornerRadius="14" Padding="9,5" Margin="0,0,5,0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Camas: " FontSize="12" Foreground="#0F766E" />
-                            <TextBlock Text="{Binding CamasDisponibles}" FontSize="12" FontWeight="Bold" Foreground="#0F766E" />
+                            <TextBlock Text="Camas: " FontSize="12" Foreground="{DynamicResource HospitalTealBrush}" />
+                            <TextBlock Text="{Binding CamasDisponibles}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource HospitalTealBrush}" />
                         </StackPanel>
                     </Border>
 
-                    <Border Background="{StaticResource HospitalPrimarySoftBrush}" CornerRadius="14" Padding="10,5" Margin="0,0,6,0">
+                    <Border Background="{DynamicResource HospitalPrimarySoftBrush}" CornerRadius="14" Padding="9,5" Margin="0,0,5,0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Salas: " FontSize="12" Foreground="#0369A1" />
-                            <TextBlock Text="{Binding CantidadSalas}" FontSize="12" FontWeight="Bold" Foreground="#0369A1" />
+                            <TextBlock Text="Salas: " FontSize="12" Foreground="{DynamicResource HospitalPrimaryBrush}" />
+                            <TextBlock Text="{Binding CantidadSalas}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource HospitalPrimaryBrush}" />
                         </StackPanel>
                     </Border>
 
-                    <Border Background="{StaticResource HospitalSuccessSoftBrush}" CornerRadius="14" Padding="10,5" Margin="0,0,8,0">
+                    <Border Background="{DynamicResource HospitalSuccessSoftBrush}" CornerRadius="14" Padding="9,5" Margin="0,0,6,0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Médicos: " FontSize="12" Foreground="#047857" />
-                            <TextBlock Text="{Binding MedicosDelDiaCount}" FontSize="12" FontWeight="Bold" Foreground="#047857" />
+                            <TextBlock Text="Médicos: " FontSize="12" Foreground="{DynamicResource HospitalSuccessBrush}" />
+                            <TextBlock Text="{Binding MedicosDelDiaCount}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource HospitalSuccessBrush}" />
                         </StackPanel>
                     </Border>
 
-                    <!-- Indicador Pulsante de Estado MySQL -->
-                    <Border Background="{Binding FondoBadgeMySql}" CornerRadius="14" Padding="10,5" Margin="0,0,8,0">
+                    <Border Background="{Binding FondoBadgeMySql}" CornerRadius="14" Padding="9,5" Margin="0,0,6,0">
                         <StackPanel Orientation="Horizontal">
-                            <Ellipse x:Name="MySqlPulseDot" Width="8" Height="8" Fill="{Binding ColorPuntoMySql}" Margin="0,0,6,0">
+                            <Ellipse Width="8" Height="8" Fill="{Binding ColorPuntoMySql}" Margin="0,0,6,0">
                                 <Ellipse.Triggers>
                                     <EventTrigger RoutedEvent="Loaded">
                                         <BeginStoryboard>
@@ -143,18 +142,27 @@
                                     </EventTrigger>
                                 </Ellipse.Triggers>
                             </Ellipse>
-                            <TextBlock Text="{Binding EtiquetaMySqlNavbar}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" />
+                            <TextBlock Text="{Binding EtiquetaMySqlNavbar}" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" />
                         </StackPanel>
                     </Border>
+
+                    <!-- Conmutador Modo Oscuro / Modo Claro -->
+                    <Button
+                        Margin="0,0,6,0"
+                        Style="{StaticResource HospitalSecondaryButtonStyle}"
+                        Command="{Binding AlternarModoOscuroCommand}"
+                        ToolTip="Cambiar entre Modo Claro Clínico y Modo Oscuro">
+                        <StackPanel Orientation="Horizontal">
+                            <ui:SymbolIcon Symbol="WeatherMoon20" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding EtiquetaBotonTema}" />
+                        </StackPanel>
+                    </Button>
 
                     <Button
                         Style="{StaticResource HospitalSecondaryButtonStyle}"
                         Command="{Binding ActualizarManualCommand}"
                         ToolTip="Sincronizar datos desde el repositorio">
-                        <StackPanel Orientation="Horizontal">
-                            <ui:SymbolIcon Symbol="ArrowSync20" Margin="0,0,4,0" />
-                            <TextBlock Text="Refrescar" />
-                        </StackPanel>
+                        <ui:SymbolIcon Symbol="ArrowSync20" />
                     </Button>
                 </StackPanel>
             </Grid>
@@ -166,7 +174,7 @@
                 Height="4"
                 Margin="0,0,0,8"
                 IsIndeterminate="True"
-                Foreground="{StaticResource HospitalPrimaryBrush}"
+                Foreground="{DynamicResource HospitalPrimaryBrush}"
                 Visibility="{Binding EstaCargando, Converter={StaticResource BoolToVis}}" />
 
             <Border
@@ -192,7 +200,7 @@
                         Margin="12,0,12,0"
                         VerticalAlignment="Center"
                         FontSize="11"
-                        Opacity="0.7"
+                        Opacity="0.75"
                         Foreground="{Binding FeedbackTextoBrush}"
                         Text="{Binding FeedbackHora}" />
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -211,7 +219,7 @@
             </Border>
         </StackPanel>
 
-        <!-- Contenedor Principal con Animación Suave al Cambiar de Pestaña -->
+        <!-- Contenedor Principal de Vistas -->
         <Grid x:Name="ActiveViewContainer" Grid.Row="3" Margin="18,12,18,10">
             <Grid.RenderTransform>
                 <TranslateTransform x:Name="ViewSlideTransform" Y="0" />
@@ -225,25 +233,25 @@
         <!-- Pie de Estado Clínico -->
         <Border
             Grid.Row="4"
-            Background="{StaticResource HospitalNavbarBrush}"
-            BorderBrush="{StaticResource HospitalBorderBrush}"
+            Background="{DynamicResource HospitalNavbarBrush}"
+            BorderBrush="{DynamicResource HospitalBorderBrush}"
             BorderThickness="0,1,0,0"
             Padding="18,7">
             <DockPanel>
                 <TextBlock
                     Text="{Binding MensajeEstado}"
                     FontSize="12"
-                    Foreground="{StaticResource HospitalTextMutedBrush}" />
+                    Foreground="{DynamicResource HospitalTextMutedBrush}" />
                 <TextBlock
                     DockPanel.Dock="Right"
                     HorizontalAlignment="Right"
                     FontSize="12"
                     FontWeight="SemiBold"
-                    Foreground="{StaticResource HospitalPrimaryBrush}"
+                    Foreground="{DynamicResource HospitalPrimaryBrush}"
                     Text="{Binding OrigenDatosTexto}" />
                 <Border
                     DockPanel.Dock="Right"
-                    Background="{StaticResource HospitalWarningSoftBrush}"
+                    Background="{DynamicResource HospitalWarningSoftBrush}"
                     CornerRadius="8"
                     Padding="8,2"
                     Margin="12,0">
@@ -251,9 +259,125 @@
                         Text="SOLO DATOS FICTICIOS (DEMO)"
                         FontSize="10"
                         FontWeight="Bold"
-                        Foreground="{StaticResource HospitalWarningBrush}" />
+                        Foreground="{DynamicResource HospitalWarningBrush}" />
                 </Border>
             </DockPanel>
         </Border>
+
+        <!-- DIÁLOGO MODAL ANIMADO DE EXPORTACIÓN PDF Y TICKET DE SALIDA -->
+        <Grid
+            x:Name="ExportModalBackdrop"
+            Grid.Row="0"
+            Grid.RowSpan="5"
+            Background="#99071320"
+            Visibility="{Binding DialogoExportacionVisible, Converter={StaticResource BoolToVis}}">
+            <Border
+                x:Name="ExportModalCard"
+                Width="520"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{DynamicResource HospitalSurfaceBrush}"
+                BorderBrush="{DynamicResource HospitalPrimaryBrush}"
+                BorderThickness="1.5"
+                CornerRadius="16"
+                RenderTransformOrigin="0.5,0.5">
+                <Border.RenderTransform>
+                    <ScaleTransform x:Name="ExportCardScale" ScaleX="1" ScaleY="1" />
+                </Border.RenderTransform>
+                <StackPanel>
+                    <!-- Cabecera con Gradiente Hospitalario (Azul Médico -> Verde Teal) -->
+                    <Border Background="{StaticResource HospitalBrandGradientBrush}" CornerRadius="14,14,0,0" Padding="22,18">
+                        <StackPanel HorizontalAlignment="Center">
+                            <Border
+                                Width="58"
+                                Height="58"
+                                CornerRadius="29"
+                                Background="#26FFFFFF"
+                                Margin="0,0,0,10"
+                                RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="ExportCheckScale" ScaleX="1" ScaleY="1" />
+                                </Border.RenderTransform>
+                                <ui:SymbolIcon Symbol="CheckmarkCircle48" Foreground="White" FontSize="34" />
+                            </Border>
+                            <TextBlock
+                                Text="{Binding ExportacionEtiquetaSuperior}"
+                                FontSize="11"
+                                FontWeight="Bold"
+                                Foreground="#E0F2FE"
+                                HorizontalAlignment="Center" />
+                            <TextBlock
+                                Text="{Binding ExportacionTitulo}"
+                                FontSize="19"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap"
+                                Margin="0,4,0,2" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Cuerpo del Comprobante Exportado -->
+                    <StackPanel Margin="22,16,22,20">
+                        <TextBlock
+                            Text="{Binding ExportacionSubtitulo}"
+                            FontSize="12.5"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            Foreground="{DynamicResource HospitalTextMutedBrush}"
+                            Margin="0,0,0,12" />
+
+                        <ProgressBar
+                            x:Name="ExportProgressBar"
+                            Height="6"
+                            Minimum="0"
+                            Maximum="100"
+                            Value="100"
+                            Foreground="{DynamicResource HospitalSuccessBrush}"
+                            Margin="0,0,0,14" />
+
+                        <Border
+                            Background="{DynamicResource HospitalSubPanelBrush}"
+                            BorderBrush="{DynamicResource HospitalBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="14,12"
+                            Margin="0,0,0,16">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,6">
+                                    <TextBlock Text="Folio Oficial:" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextMutedBrush}" />
+                                    <TextBlock Text="{Binding ExportacionFolio}" FontWeight="Bold" Foreground="{DynamicResource HospitalTealBrush}" HorizontalAlignment="Right" />
+                                </DockPanel>
+                                <DockPanel Margin="0,0,0,6">
+                                    <TextBlock Text="Cédula:" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextMutedBrush}" />
+                                    <TextBlock Text="{Binding ExportacionCedula}" FontWeight="Bold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" HorizontalAlignment="Right" />
+                                </DockPanel>
+                                <TextBlock Text="{Binding ExportacionPaciente}" FontWeight="Bold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,2,0,4" />
+                                <TextBlock Text="{Binding ExportacionMedicoYCama}" FontSize="12" Foreground="{DynamicResource HospitalTextMutedBrush}" Margin="0,0,0,4" />
+                                <TextBlock Text="{Binding ExportacionSintomas}" FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,8" />
+                                <Border Background="{DynamicResource HospitalSuccessSoftBrush}" CornerRadius="6" Padding="8,5">
+                                    <TextBlock
+                                        Text="{Binding ExportacionArchivoDestino}"
+                                        FontSize="11.5"
+                                        FontWeight="SemiBold"
+                                        TextWrapping="Wrap"
+                                        Foreground="{DynamicResource HospitalSuccessBrush}" />
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <Button
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource HospitalPrimaryButtonStyle}"
+                            Command="{Binding CerrarDialogoExportacionCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Checkmark20" Margin="0,0,6,0" />
+                                <TextBlock Text="Aceptar y Continuar" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </ui:FluentWindow>

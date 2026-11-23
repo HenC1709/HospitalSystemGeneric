@@ -5,7 +5,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="365" />
+            <ColumnDefinition Width="360" />
             <ColumnDefinition Width="14" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -15,38 +15,38 @@
             <Border Style="{StaticResource HospitalHoverCardStyle}">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                        <Border Width="30" Height="30" CornerRadius="8" Background="{StaticResource HospitalPrimarySoftBrush}" Margin="0,0,10,0">
-                            <ui:SymbolIcon Symbol="PersonAdd24" Foreground="{StaticResource HospitalPrimaryBrush}" />
+                        <Border Width="30" Height="30" CornerRadius="8" Background="{DynamicResource HospitalPrimarySoftBrush}" Margin="0,0,10,0">
+                            <ui:SymbolIcon Symbol="PersonAdd24" Foreground="{DynamicResource HospitalPrimaryBrush}" />
                         </Border>
                         <TextBlock
                             Text="Admisión de Paciente"
                             FontSize="16"
                             FontWeight="Bold"
                             VerticalAlignment="Center"
-                            Foreground="{StaticResource HospitalTextPrimaryBrush}" />
+                            Foreground="{DynamicResource HospitalTextPrimaryBrush}" />
                     </StackPanel>
 
-                    <Border Background="{StaticResource HospitalWarningSoftBrush}" CornerRadius="6" Padding="8,5" Margin="0,0,0,10">
+                    <Border Background="{DynamicResource HospitalWarningSoftBrush}" CornerRadius="6" Padding="8,5" Margin="0,0,0,10">
                         <TextBlock
                             Text="Aviso: Entorno de demostración sin autenticación. Ingrese solo datos ficticios."
                             FontSize="11"
                             TextWrapping="Wrap"
-                            Foreground="{StaticResource HospitalWarningBrush}" />
+                            Foreground="{DynamicResource HospitalWarningBrush}" />
                     </Border>
 
-                    <TextBlock Text="Cédula de Identidad *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                    <TextBlock Text="Cédula de Identidad *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                     <ui:TextBox
                         Margin="0,0,0,10"
                         PlaceholderText="Ej. V-25890123"
                         Text="{Binding PacienteCedula, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Text="Nombres y Apellidos *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                    <TextBlock Text="Nombres y Apellidos *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                     <ui:TextBox
                         Margin="0,0,0,10"
                         PlaceholderText="Nombre completo del paciente"
                         Text="{Binding PacienteNombres, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Text="Síntomas Clínicos *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                    <TextBlock Text="Síntomas Clínicos *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                     <ui:TextBox
                         Margin="0,0,0,10"
                         Height="68"
@@ -62,11 +62,11 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Sexo" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Sexo" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                             <ComboBox ItemsSource="{Binding OpcionesSexo}" SelectedItem="{Binding PacienteSexo}" />
                         </StackPanel>
                         <StackPanel Grid.Column="2">
-                            <TextBlock Text="Convenio" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Convenio" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                             <ComboBox
                                 ItemsSource="{Binding Convenios}"
                                 SelectedItem="{Binding ConvenioSeleccionado}"
@@ -74,7 +74,7 @@
                         </StackPanel>
                     </Grid>
 
-                    <TextBlock Text="Médico del Día Asignado *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                    <TextBlock Text="Médico del Día Asignado *" FontWeight="SemiBold" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                     <ComboBox
                         Margin="0,0,0,10"
                         ItemsSource="{Binding MedicosDelDia}"
@@ -98,30 +98,29 @@
                         Content="Requiere salida inmediata a laboratorio"
                         IsChecked="{Binding PacienteRequiereLaboratorio}" />
 
-                    <!-- Subpanel con fondo suave clínico cuando requiere laboratorio -->
                     <Border
                         Margin="0,0,0,12"
                         Padding="10"
                         CornerRadius="8"
-                        Background="#F4FAFF"
-                        BorderBrush="#BAE0F5"
+                        Background="{DynamicResource HospitalSubPanelBrush}"
+                        BorderBrush="{DynamicResource HospitalBorderBrush}"
                         BorderThickness="1"
                         Visibility="{Binding PacienteRequiereLaboratorio, Converter={StaticResource BoolToVis}}">
                         <StackPanel>
-                            <TextBlock Text="Laboratorio Destino" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="Laboratorio Destino" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                             <ComboBox
                                 Margin="0,0,0,8"
                                 ItemsSource="{Binding Laboratorios}"
                                 SelectedItem="{Binding LaboratorioIngresoSeleccionado}"
                                 DisplayMemberPath="EtiquetaSelector" />
 
-                            <TextBlock Text="Examen Solicitado" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="Examen Solicitado" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                             <ui:TextBox
                                 Margin="0,0,0,8"
                                 PlaceholderText="Ej. Hemograma + PCR"
                                 Text="{Binding ExamenIngreso, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <TextBlock Text="Prioridad Clínica" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4" />
+                            <TextBlock Text="Prioridad Clínica" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                             <ComboBox
                                 ItemsSource="{Binding OpcionesPrioridad}"
                                 SelectedItem="{Binding PrioridadIngreso}" />
@@ -141,7 +140,7 @@
             </Border>
         </ScrollViewer>
 
-        <!-- Tabla de Pacientes Registrados -->
+        <!-- Tabla de Pacientes + Exportación PDF y Ticket de Salida -->
         <Border Grid.Column="2" Style="{StaticResource HospitalHoverCardStyle}" VerticalAlignment="Stretch">
             <Grid>
                 <Grid.RowDefinitions>
@@ -151,54 +150,99 @@
 
                 <DockPanel Margin="0,0,0,12">
                     <TextBlock
-                        Text="Censo de Pacientes y Episodios Clínicos"
+                        Text="Censo de Pacientes y Expedientes"
                         FontSize="16"
                         FontWeight="Bold"
-                        Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                        Foreground="{DynamicResource HospitalTextPrimaryBrush}"
                         VerticalAlignment="Center" />
-                    <CheckBox
-                        DockPanel.Dock="Right"
-                        HorizontalAlignment="Right"
-                        Content="Solo pacientes en atención activa"
-                        IsChecked="{Binding SoloPacientesActivos}" />
+
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <CheckBox
+                            Margin="0,0,12,0"
+                            VerticalAlignment="Center"
+                            Content="Solo activos"
+                            IsChecked="{Binding SoloPacientesActivos}" />
+
+                        <Button
+                            Margin="0,0,8,0"
+                            Style="{StaticResource HospitalSecondaryButtonStyle}"
+                            Command="{Binding ExportarExpedientePdfCommand}"
+                            CommandParameter="{Binding PacienteSeleccionadoTabla}"
+                            ToolTip="Exportar el expediente clínico del paciente seleccionado a PDF">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="DocumentPdf20" Margin="0,0,5,0" />
+                                <TextBlock Text="Exportar Expediente PDF" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button
+                            Style="{StaticResource HospitalPrimaryButtonStyle}"
+                            Padding="12,6"
+                            Command="{Binding ImprimirTicketSalidaCommand}"
+                            CommandParameter="{Binding PacienteSeleccionadoTabla}"
+                            ToolTip="Generar e imprimir ticket de salida del paciente seleccionado">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Print20" Margin="0,0,5,0" />
+                                <TextBlock Text="Imprimir Ticket Salida" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </DockPanel>
 
                 <DataGrid
                     Grid.Row="1"
                     ItemsSource="{Binding Pacientes}"
+                    SelectedItem="{Binding PacienteSeleccionadoTabla}"
                     AutoGenerateColumns="False"
                     IsReadOnly="True"
                     HeadersVisibility="Column">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Cédula" Binding="{Binding Cedula}" Width="105" />
-                        <DataGridTextColumn Header="Paciente" Binding="{Binding Nombres}" Width="165" />
+                        <DataGridTextColumn Header="Cédula" Binding="{Binding Cedula}" Width="100" />
+                        <DataGridTextColumn Header="Paciente" Binding="{Binding Nombres}" Width="155" />
                         <DataGridTextColumn Header="Síntomas" Binding="{Binding Sintomas}" Width="*" />
-                        <DataGridTextColumn Header="Médico" Binding="{Binding MedicoAsignado}" Width="145" />
-                        <DataGridTextColumn Header="Cama" Binding="{Binding CamaDescripcion}" Width="150" />
-                        <DataGridTemplateColumn Header="Estado" Width="135">
+                        <DataGridTextColumn Header="Cama" Binding="{Binding CamaDescripcion}" Width="140" />
+                        <DataGridTemplateColumn Header="Estado" Width="130">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Background="{StaticResource HospitalPrimarySoftBrush}" CornerRadius="10" Padding="8,3" HorizontalAlignment="Left">
-                                        <TextBlock Text="{Binding EstadoLegible}" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource HospitalPrimaryHoverBrush}" />
+                                    <Border Background="{DynamicResource HospitalPrimarySoftBrush}" CornerRadius="10" Padding="8,3" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding EstadoLegible}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource HospitalPrimaryBrush}" />
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Acciones Clínicas" Width="210">
+                        <DataGridTemplateColumn Header="Acciones y Documentos" Width="285">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Button
-                                            Margin="0,0,6,0"
-                                            Padding="9,4"
+                                            Margin="0,0,5,0"
+                                            Padding="7,4"
                                             Style="{StaticResource HospitalSecondaryButtonStyle}"
-                                            Content="Salida Lab"
+                                            Content="PDF"
+                                            ToolTip="Exportar expediente clínico a PDF"
+                                            Command="{Binding DataContext.ExportarExpedientePdfCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                        <Button
+                                            Margin="0,0,5,0"
+                                            Padding="7,4"
+                                            Style="{StaticResource HospitalSecondaryButtonStyle}"
+                                            Content="Ticket"
+                                            ToolTip="Imprimir ticket de salida"
+                                            Command="{Binding DataContext.ImprimirTicketSalidaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                        <Button
+                                            Margin="0,0,5,0"
+                                            Padding="7,4"
+                                            Style="{StaticResource HospitalSecondaryButtonStyle}"
+                                            Content="Lab"
+                                            ToolTip="Derivar a laboratorio"
                                             Command="{Binding DataContext.PrepararSalidaLaboratorioDesdePacienteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}" />
                                         <Button
-                                            Padding="9,4"
+                                            Padding="8,4"
                                             Style="{StaticResource HospitalPrimaryButtonStyle}"
-                                            Content="Dar Alta"
+                                            Content="Alta"
+                                            ToolTip="Otorgar alta médica"
                                             Command="{Binding DataContext.DarAltaPacienteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}" />
                                     </StackPanel>
