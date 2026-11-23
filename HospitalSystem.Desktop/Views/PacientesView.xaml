@@ -26,6 +26,14 @@
                             Foreground="{StaticResource HospitalTextPrimaryBrush}" />
                     </StackPanel>
 
+                    <Border Background="{StaticResource HospitalWarningSoftBrush}" CornerRadius="6" Padding="8,5" Margin="0,0,0,10">
+                        <TextBlock
+                            Text="Aviso: Entorno de demostración sin autenticación. Ingrese solo datos ficticios."
+                            FontSize="11"
+                            TextWrapping="Wrap"
+                            Foreground="{StaticResource HospitalWarningBrush}" />
+                    </Border>
+
                     <TextBlock Text="Cédula de Identidad *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
                     <ui:TextBox
                         Margin="0,0,0,10"

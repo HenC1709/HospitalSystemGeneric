@@ -57,10 +57,11 @@
                         <Button
                             Grid.Column="2"
                             Style="{StaticResource HospitalPrimaryButtonStyle}"
-                            Command="{Binding InicializarBaseDatosMySqlCommand}">
+                            ToolTip="Elimina las tablas actuales y vuelve a cargar los datos ficticios de demostración"
+                            Command="{Binding RestablecerBaseDatosDemoCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <ui:SymbolIcon Symbol="DatabaseArrowUp20" Margin="0,0,6,0" />
-                                <TextBlock Text="Inicializar BD (Schema + Seed)" />
+                                <TextBlock Text="Restablecer base de datos de demostración" />
                             </StackPanel>
                         </Button>
                     </Grid>

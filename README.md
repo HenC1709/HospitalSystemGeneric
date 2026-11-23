@@ -38,8 +38,15 @@ La solución (`HospitalSystem.slnx`) sigue una estructura **Clean Architecture**
 1. **`HospitalSystem.Core`**: Entidades del dominio (`Paciente`, `Medico`, `Sala`, `Cama`, `Atencion`, `Laboratorio`, `SalidaLaboratorio`, etc.), enumeraciones clínicas, excepciones de dominio y extensiones.
 2. **`HospitalSystem.Application`**: DTOs inmutables (`record`), contrato `IHospitalRepository` y casos de uso en `HospitalServices`.
 3. **`HospitalSystem.Infrastructure`**: Acceso a datos con `MySqlConnector` (`HospitalRepository`), consumo de vistas, funciones y procedimientos almacenados de MySQL, ejecutor de scripts SQL y respaldo desconectado en memoria (`HospitalDataStore`).
-4. **`HospitalSystem.Desktop`**: Interfaz gráfica WPF con patrón **MVVM** (`CommunityToolkit.Mvvm`) y tema moderno Fluent oscuro mediante **WPF-UI**, evitando diccionarios XAML extensos de estilos manuales.
+4. **`HospitalSystem.Desktop`**: Interfaz gráfica WPF con patrón **MVVM** (`CommunityToolkit.Mvvm`, dividida modularmente en `MainViewModel.Dashboard`, `Pacientes`, `Medicos` y `Laboratorios`) y tema moderno mediante **WPF-UI**.
 5. **`HospitalSystem.Console`**: Utilidad ligera por línea de comandos para verificar rápidamente la conexión a MySQL y los indicadores del hospital.
+6. **`HospitalSystem.Tests`**: Suite de pruebas unitarias automatizadas con **xUnit** para validar concurrencia de camas, protección de altas médicas, validaciones de dominio y derivaciones a laboratorio.
+
+---
+
+## Aviso de Seguridad y Datos Ficticios
+
+> **Importante**: Esta aplicación es un prototipo técnico para pruebas de **MySQL** y **WPF-UI**. No incluye autenticación de usuarios, control de acceso basado en roles (RBAC), cifrado de datos clínicos sensibles (PHI) ni bitácora de auditoría normativa. **Utilízala exclusivamente con datos ficticios de prueba; nunca ingreses información real de pacientes.**
 
 ---
 

@@ -17,14 +17,15 @@ Este documento explica cómo conectar **HospitalSystem** a un servidor **MySQL 8
 
 ## 2. Formas de Inicializar la Base de Datos (`hospital_system_db`)
 
-### Opción A: Automática desde la Aplicación WPF (Recomendada para pruebas rápidas)
+### Opción A: Automática desde la Aplicación WPF (Solo entorno de demostración)
 1. Ejecuta `HospitalSystem.Desktop`.
-2. En la pestaña **Resumen General**, ubica la tarjeta **Conexión de Prueba MySQL**.
+2. En la pestaña **Resumen General**, ubica la tarjeta **Laboratorio de Conexión MySQL**.
 3. Ajusta tu cadena de conexión (por ejemplo agrega tu contraseña en `Pwd=tu_clave;`):
    ```text
    Server=localhost;Port=3306;Database=hospital_system_db;Uid=root;Pwd=tu_clave;AllowUserVariables=True;
    ```
-4. Haz clic en **Inicializar BD (Schema + Seed)**. La aplicación se conectará al servidor MySQL, creará `hospital_system_db`, ejecutará `Database/schema.sql` (incluyendo funciones y procedimientos con `DELIMITER`) y cargará `Database/seed.sql`.
+4. Haz clic en **Restablecer base de datos de demostración** y confirma el cuadro de advertencia.
+   > **Advertencia**: `Database/schema.sql` utiliza `DROP TABLE IF EXISTS` para dejar un entorno limpio de pruebas, por lo que **destruye registros previos**. Para evolucionar el esquema sin perder datos, aplica migraciones incrementales no destructivas en `Database/migrations/` (como `001_schema_no_destructivo.sql`).
 5. Haz clic en **Probar Conexión** en cualquier momento para verificar versión y disponibilidad.
 
 ### Opción B: Desde Terminal o MySQL Workbench
@@ -133,12 +134,12 @@ El archivo `Database/schema.sql` implementa lógica directamente en el motor MyS
    - **Parámetros**: `IN` (`p_cedula`, `p_nombres`, `p_sexo`, `p_sintomas`, `p_convenio_id`, `p_medico_id`, `p_cama_id`, `p_requiere_lab`, `p_laboratorio_id`, `p_examen_lab`, `p_prioridad_lab`) y `OUT` (`p_paciente_id`, `p_atencion_id`).
    - **Propósito**: Ejecuta dentro de una transacción (`START TRANSACTION` / `COMMIT` con `EXIT HANDLER` para `ROLLBACK` ante error):
      1. Inserta el paciente o actualiza sus datos/síntomas si la `cedula` ya existía (`ON DUPLICATE KEY UPDATE`).
-     2. Marca `ocupada = 1` en la cama seleccionada si aplica.
-     3. Crea el registro en `atenciones`.
-     4. Si el paciente requiere salida inmediata a laboratorio (`p_requiere_lab = 1`), inserta automáticamente el registro en `salidas_laboratorio` y coloca la atención en estado `EnLaboratorio`.
+    2. Ejecuta `UPDATE camas SET ocupada = 1 WHERE id = p_cama_id AND ocupada = 0` y comprueba `ROW_COUNT() <> 1`; si la cama ya estaba ocupada o no existe, lanza `SIGNAL SQLSTATE '45000'` provocando `ROLLBACK` inmediato.
+    3. Crea el registro en `atenciones`.
+    4. Si el paciente requiere salida inmediata a laboratorio (`p_requiere_lab = 1`), inserta automáticamente el registro en `salidas_laboratorio` y coloca la atención en estado `EnLaboratorio`.
 
 2. **`sp_dar_alta_atencion(IN p_atencion_id INT)`**
-   - **Propósito**: Cambia el estado de la atención a `AltaMedica`, registra `fecha_egreso = CURRENT_TIMESTAMP` y libera de forma atómica la cama asociada (`ocupada = 0`).
+   - **Propósito**: Bloquea la fila con `SELECT ... FOR UPDATE`, rechaza con `SIGNAL SQLSTATE '45000'` atenciones inexistentes o que ya tengan `AltaMedica`, actualiza el egreso verificando `ROW_COUNT() = 1` y libera la cama únicamente si ninguna otra atención activa posterior la tiene asignada (`NOT EXISTS`).
 
 ### Vista Consolidada (`VIEW`)
 

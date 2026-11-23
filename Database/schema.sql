@@ -296,7 +296,15 @@ BEGIN
     END IF;
 
     IF p_cama_id IS NOT NULL THEN
-        UPDATE camas SET ocupada = 1 WHERE id = p_cama_id AND ocupada = 0;
+        UPDATE camas
+           SET ocupada = 1
+         WHERE id = p_cama_id
+           AND ocupada = 0;
+
+        IF ROW_COUNT() <> 1 THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'La cama seleccionada ya está ocupada o no existe.';
+        END IF;
     END IF;
 
     INSERT INTO atenciones (paciente_id, medico_id, cama_id, sintomas, requiere_laboratorio, estado)
@@ -321,25 +329,60 @@ BEGIN
     COMMIT;
 END$$
 
--- Procedimiento 2: Da de alta médica una atención y libera su cama automáticamente
+-- Procedimiento 2: Da de alta médica una atención protegiendo concurrencia y reasignaciones de cama
 CREATE PROCEDURE sp_dar_alta_atencion(IN p_atencion_id INT)
 BEGIN
     DECLARE v_cama_id INT DEFAULT NULL;
+    DECLARE v_estado_actual VARCHAR(20) DEFAULT NULL;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
 
     START TRANSACTION;
 
-    SELECT cama_id INTO v_cama_id
+    -- Bloquea la fila de la atención para impedir altas duplicadas concurrentes
+    SELECT cama_id, estado
+      INTO v_cama_id, v_estado_actual
       FROM atenciones
      WHERE id = p_atencion_id
-     LIMIT 1;
+     FOR UPDATE;
+
+    IF v_estado_actual IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'La atención indicada no existe.';
+    END IF;
+
+    IF v_estado_actual = 'AltaMedica' THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'La atención ya cuenta con alta médica previa.';
+    END IF;
 
     UPDATE atenciones
        SET estado = 'AltaMedica',
            fecha_egreso = CURRENT_TIMESTAMP
-     WHERE id = p_atencion_id;
+     WHERE id = p_atencion_id
+       AND estado <> 'AltaMedica';
 
+    IF ROW_COUNT() <> 1 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'No se pudo completar el alta médica por un cambio concurrente.';
+    END IF;
+
+    -- Libera la cama únicamente si ninguna otra atención activa la tiene asignada
     IF v_cama_id IS NOT NULL THEN
-        UPDATE camas SET ocupada = 0 WHERE id = v_cama_id;
+        UPDATE camas c
+           SET c.ocupada = 0
+         WHERE c.id = v_cama_id
+           AND NOT EXISTS (
+               SELECT 1
+                 FROM atenciones a2
+                WHERE a2.cama_id = v_cama_id
+                  AND a2.id <> p_atencion_id
+                  AND a2.estado <> 'AltaMedica'
+           );
     END IF;
 
     COMMIT;

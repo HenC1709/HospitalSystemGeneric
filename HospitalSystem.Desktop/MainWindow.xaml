@@ -241,6 +241,18 @@
                     FontWeight="SemiBold"
                     Foreground="{StaticResource HospitalPrimaryBrush}"
                     Text="{Binding OrigenDatosTexto}" />
+                <Border
+                    DockPanel.Dock="Right"
+                    Background="{StaticResource HospitalWarningSoftBrush}"
+                    CornerRadius="8"
+                    Padding="8,2"
+                    Margin="12,0">
+                    <TextBlock
+                        Text="SOLO DATOS FICTICIOS (DEMO)"
+                        FontSize="10"
+                        FontWeight="Bold"
+                        Foreground="{StaticResource HospitalWarningBrush}" />
+                </Border>
             </DockPanel>
         </Border>
     </Grid>
