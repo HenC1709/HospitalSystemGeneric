@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "HospitalSystem Desktop (WPF-UI)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/HospitalSystem.Desktop/bin/Debug/net10.0-windows/HospitalSystem.Desktop.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/HospitalSystem.Desktop",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "HospitalSystem Console (Smoke Test MySQL)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/HospitalSystem.Console/bin/Debug/net10.0/HospitalSystem.Console.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/HospitalSystem.Console",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}

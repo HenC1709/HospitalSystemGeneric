@@ -1,0 +1,150 @@
+<UserControl
+    x:Class="HospitalSystem.Desktop.Views.LaboratoriosView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="360" />
+            <ColumnDefinition Width="14" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Autorización de Salida a Laboratorio -->
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border Style="{StaticResource HospitalHoverCardStyle}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <Border Width="30" Height="30" CornerRadius="8" Background="{StaticResource HospitalWarningSoftBrush}" Margin="0,0,10,0">
+                                <ui:SymbolIcon Symbol="Beaker24" Foreground="{StaticResource HospitalWarningBrush}" />
+                            </Border>
+                            <TextBlock
+                                Text="Orden de Salida a Laboratorio"
+                                FontSize="16"
+                                FontWeight="Bold"
+                                VerticalAlignment="Center"
+                                Foreground="{StaticResource HospitalTextPrimaryBrush}" />
+                        </StackPanel>
+
+                        <TextBlock Text="Paciente en Atención *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <ComboBox
+                            Margin="0,0,0,10"
+                            ItemsSource="{Binding PacientesActivosSelector}"
+                            SelectedItem="{Binding PacienteParaLabSeleccionado}"
+                            DisplayMemberPath="Nombres" />
+
+                        <TextBlock Text="Unidad de Laboratorio *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <ComboBox
+                            Margin="0,0,0,10"
+                            ItemsSource="{Binding Laboratorios}"
+                            SelectedItem="{Binding LaboratorioSalidaSeleccionado}"
+                            DisplayMemberPath="EtiquetaSelector" />
+
+                        <TextBlock Text="Estudio / Examen Solicitado *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <ui:TextBox
+                            Margin="0,0,0,10"
+                            PlaceholderText="Ej. TAC Torácico / Hemocultivo"
+                            Text="{Binding ExamenSalidaLab, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Text="Justificación Clínica / Síntomas *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <ui:TextBox
+                            Margin="0,0,0,10"
+                            Height="62"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            Text="{Binding MotivoSalidaLab, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Text="Prioridad" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                        <ComboBox
+                            Margin="0,0,0,14"
+                            ItemsSource="{Binding OpcionesPrioridad}"
+                            SelectedItem="{Binding PrioridadSalidaLab}" />
+
+                        <Button
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource HospitalPrimaryButtonStyle}"
+                            Command="{Binding RegistrarSalidaLaboratorioCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Send20" Margin="0,0,6,0" />
+                                <TextBlock Text="Autorizar Salida a Laboratorio" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource HospitalHoverCardStyle}">
+                    <StackPanel>
+                        <TextBlock
+                            Text="Informe de Resultado al Retornar"
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                            Margin="0,0,0,8" />
+                        <ui:TextBox
+                            Height="58"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            PlaceholderText="Escribe el resultado diagnóstico recibido..."
+                            Text="{Binding ResultadoRecibidoTexto, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Trazabilidad de Salidas y Retornos -->
+        <Border Grid.Column="2" Style="{StaticResource HospitalHoverCardStyle}" VerticalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Text="Trazabilidad de Salidas a Laboratorios Clínicos"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                    Margin="0,0,0,12" />
+
+                <DataGrid
+                    Grid.Row="1"
+                    ItemsSource="{Binding SalidasLaboratorio}"
+                    SelectedItem="{Binding SalidaSeleccionada}"
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Cédula" Binding="{Binding PacienteCedula}" Width="95" />
+                        <DataGridTextColumn Header="Paciente" Binding="{Binding PacienteNombres}" Width="155" />
+                        <DataGridTextColumn Header="Laboratorio" Binding="{Binding LaboratorioNombre}" Width="180" />
+                        <DataGridTextColumn Header="Estudio" Binding="{Binding ExamenSolicitado}" Width="*" />
+                        <DataGridTemplateColumn Header="Prioridad" Width="90">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource HospitalWarningSoftBrush}" CornerRadius="10" Padding="8,2" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding Prioridad}" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource HospitalWarningBrush}" />
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="125" />
+                        <DataGridTemplateColumn Header="Retorno a Sala" Width="155">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Padding="9,4"
+                                        Style="{StaticResource HospitalSecondaryButtonStyle}"
+                                        Content="Recibir Resultado"
+                                        IsEnabled="{Binding PuedeRecibirResultado}"
+                                        Command="{Binding DataContext.CompletarSalidaLaboratorioCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

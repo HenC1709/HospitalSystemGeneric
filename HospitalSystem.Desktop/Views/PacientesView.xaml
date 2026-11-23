@@ -1,0 +1,205 @@
+<UserControl
+    x:Class="HospitalSystem.Desktop.Views.PacientesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="365" />
+            <ColumnDefinition Width="14" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Formulario Clínico de Admisión de Paciente -->
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+            <Border Style="{StaticResource HospitalHoverCardStyle}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <Border Width="30" Height="30" CornerRadius="8" Background="{StaticResource HospitalPrimarySoftBrush}" Margin="0,0,10,0">
+                            <ui:SymbolIcon Symbol="PersonAdd24" Foreground="{StaticResource HospitalPrimaryBrush}" />
+                        </Border>
+                        <TextBlock
+                            Text="Admisión de Paciente"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource HospitalTextPrimaryBrush}" />
+                    </StackPanel>
+
+                    <TextBlock Text="Cédula de Identidad *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                    <ui:TextBox
+                        Margin="0,0,0,10"
+                        PlaceholderText="Ej. V-25890123"
+                        Text="{Binding PacienteCedula, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Nombres y Apellidos *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                    <ui:TextBox
+                        Margin="0,0,0,10"
+                        PlaceholderText="Nombre completo del paciente"
+                        Text="{Binding PacienteNombres, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Síntomas Clínicos *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                    <ui:TextBox
+                        Margin="0,0,0,10"
+                        Height="68"
+                        AcceptsReturn="True"
+                        TextWrapping="Wrap"
+                        PlaceholderText="Fiebre, dolor torácico, cefalea, disnea..."
+                        Text="{Binding PacienteSintomas, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Sexo" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                            <ComboBox ItemsSource="{Binding OpcionesSexo}" SelectedItem="{Binding PacienteSexo}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Convenio" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                            <ComboBox
+                                ItemsSource="{Binding Convenios}"
+                                SelectedItem="{Binding ConvenioSeleccionado}"
+                                DisplayMemberPath="Nombre" />
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="Médico del Día Asignado *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                    <ComboBox
+                        Margin="0,0,0,10"
+                        ItemsSource="{Binding MedicosDelDia}"
+                        SelectedItem="{Binding MedicoAsignadoSeleccionado}"
+                        DisplayMemberPath="ResumenSelector" />
+
+                    <CheckBox
+                        Margin="0,0,0,6"
+                        Content="Asignar cama hospitalaria libre"
+                        IsChecked="{Binding AsignarCamaHospitalaria}" />
+
+                    <ComboBox
+                        Margin="0,0,0,10"
+                        Visibility="{Binding AsignarCamaHospitalaria, Converter={StaticResource BoolToVis}}"
+                        ItemsSource="{Binding CamasDisponiblesLista}"
+                        SelectedItem="{Binding CamaSeleccionada}"
+                        DisplayMemberPath="EtiquetaSelector" />
+
+                    <CheckBox
+                        Margin="0,2,0,8"
+                        Content="Requiere salida inmediata a laboratorio"
+                        IsChecked="{Binding PacienteRequiereLaboratorio}" />
+
+                    <!-- Subpanel con fondo suave clínico cuando requiere laboratorio -->
+                    <Border
+                        Margin="0,0,0,12"
+                        Padding="10"
+                        CornerRadius="8"
+                        Background="#F4FAFF"
+                        BorderBrush="#BAE0F5"
+                        BorderThickness="1"
+                        Visibility="{Binding PacienteRequiereLaboratorio, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <TextBlock Text="Laboratorio Destino" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4" />
+                            <ComboBox
+                                Margin="0,0,0,8"
+                                ItemsSource="{Binding Laboratorios}"
+                                SelectedItem="{Binding LaboratorioIngresoSeleccionado}"
+                                DisplayMemberPath="EtiquetaSelector" />
+
+                            <TextBlock Text="Examen Solicitado" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4" />
+                            <ui:TextBox
+                                Margin="0,0,0,8"
+                                PlaceholderText="Ej. Hemograma + PCR"
+                                Text="{Binding ExamenIngreso, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBlock Text="Prioridad Clínica" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4" />
+                            <ComboBox
+                                ItemsSource="{Binding OpcionesPrioridad}"
+                                SelectedItem="{Binding PrioridadIngreso}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Button
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource HospitalPrimaryButtonStyle}"
+                        Command="{Binding RegistrarPacienteCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <ui:SymbolIcon Symbol="CheckmarkCircle20" Margin="0,0,6,0" />
+                            <TextBlock Text="Registrar Ingreso del Paciente" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+
+        <!-- Tabla de Pacientes Registrados -->
+        <Border Grid.Column="2" Style="{StaticResource HospitalHoverCardStyle}" VerticalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <DockPanel Margin="0,0,0,12">
+                    <TextBlock
+                        Text="Censo de Pacientes y Episodios Clínicos"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                        VerticalAlignment="Center" />
+                    <CheckBox
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Right"
+                        Content="Solo pacientes en atención activa"
+                        IsChecked="{Binding SoloPacientesActivos}" />
+                </DockPanel>
+
+                <DataGrid
+                    Grid.Row="1"
+                    ItemsSource="{Binding Pacientes}"
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Cédula" Binding="{Binding Cedula}" Width="105" />
+                        <DataGridTextColumn Header="Paciente" Binding="{Binding Nombres}" Width="165" />
+                        <DataGridTextColumn Header="Síntomas" Binding="{Binding Sintomas}" Width="*" />
+                        <DataGridTextColumn Header="Médico" Binding="{Binding MedicoAsignado}" Width="145" />
+                        <DataGridTextColumn Header="Cama" Binding="{Binding CamaDescripcion}" Width="150" />
+                        <DataGridTemplateColumn Header="Estado" Width="135">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource HospitalPrimarySoftBrush}" CornerRadius="10" Padding="8,3" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding EstadoLegible}" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource HospitalPrimaryHoverBrush}" />
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Acciones Clínicas" Width="210">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button
+                                            Margin="0,0,6,0"
+                                            Padding="9,4"
+                                            Style="{StaticResource HospitalSecondaryButtonStyle}"
+                                            Content="Salida Lab"
+                                            Command="{Binding DataContext.PrepararSalidaLaboratorioDesdePacienteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                        <Button
+                                            Padding="9,4"
+                                            Style="{StaticResource HospitalPrimaryButtonStyle}"
+                                            Content="Dar Alta"
+                                            Command="{Binding DataContext.DarAltaPacienteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

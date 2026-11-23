@@ -1,0 +1,127 @@
+<UserControl
+    x:Class="HospitalSystem.Desktop.Views.MedicosView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="345" />
+            <ColumnDefinition Width="14" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Alta de Especialista -->
+        <Border Grid.Column="0" Style="{StaticResource HospitalHoverCardStyle}" VerticalAlignment="Top">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                    <Border Width="30" Height="30" CornerRadius="8" Background="{StaticResource HospitalSuccessSoftBrush}" Margin="0,0,10,0">
+                        <ui:SymbolIcon Symbol="Stethoscope24" Foreground="{StaticResource HospitalSuccessBrush}" />
+                    </Border>
+                    <TextBlock
+                        Text="Incorporar Especialista"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        VerticalAlignment="Center"
+                        Foreground="{StaticResource HospitalTextPrimaryBrush}" />
+                </StackPanel>
+
+                <TextBlock Text="Cédula Profesional *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <ui:TextBox
+                    Margin="0,0,0,10"
+                    PlaceholderText="Ej. MP-60120"
+                    Text="{Binding NuevoMedicoCedula, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Nombres Completos *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <ui:TextBox
+                    Margin="0,0,0,10"
+                    PlaceholderText="Ej. Dra. Elena Vargas"
+                    Text="{Binding NuevoMedicoNombres, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Especialidad Médica *" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <ui:TextBox
+                    Margin="0,0,0,10"
+                    PlaceholderText="Ej. Neumología Clínica"
+                    Text="{Binding NuevoMedicoEspecialidad, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Turno Asignado" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <ComboBox
+                    Margin="0,0,0,10"
+                    ItemsSource="{Binding OpcionesTurno}"
+                    SelectedItem="{Binding NuevoMedicoTurno}" />
+
+                <TextBlock Text="Consultorio / Pabellón" FontWeight="SemiBold" Foreground="{StaticResource HospitalTextPrimaryBrush}" Margin="0,0,0,4" />
+                <ui:TextBox
+                    Margin="0,0,0,10"
+                    PlaceholderText="Ej. Consultorio 210"
+                    Text="{Binding NuevoMedicoConsultorio, UpdateSourceTrigger=PropertyChanged}" />
+
+                <CheckBox
+                    Margin="0,0,0,14"
+                    Content="Activo hoy en Médicos del Día"
+                    IsChecked="{Binding NuevoMedicoEnGuardia}" />
+
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource HospitalPrimaryButtonStyle}"
+                    Command="{Binding RegistrarMedicoCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Symbol="AddCircle20" Margin="0,0,6,0" />
+                        <TextBlock Text="Guardar en Plantilla Médica" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Plantilla y Médicos del Día -->
+        <Border Grid.Column="2" Style="{StaticResource HospitalHoverCardStyle}" VerticalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <DockPanel Margin="0,0,0,12">
+                    <TextBlock
+                        Text="Médicos del Día y Cuerpo Facultativo"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                        VerticalAlignment="Center" />
+                    <CheckBox
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Right"
+                        Content="Mostrar únicamente Médicos del Día"
+                        IsChecked="{Binding SoloMedicosDelDiaFiltro}" />
+                </DockPanel>
+
+                <DataGrid
+                    Grid.Row="1"
+                    ItemsSource="{Binding MedicosListado}"
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Matrícula" Binding="{Binding CedulaProfesional}" Width="105" />
+                        <DataGridTextColumn Header="Médico" Binding="{Binding Nombres}" Width="*" />
+                        <DataGridTextColumn Header="Especialidad" Binding="{Binding Especialidad}" Width="180" />
+                        <DataGridTextColumn Header="Turno" Binding="{Binding Turno}" Width="95" />
+                        <DataGridTextColumn Header="Consultorio" Binding="{Binding Consultorio}" Width="145" />
+                        <DataGridCheckBoxColumn Header="En Guardia" Binding="{Binding EnGuardiaHoy, Mode=OneWay}" Width="85" />
+                        <DataGridTemplateColumn Header="Gestión de Guardia" Width="165">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Padding="10,4"
+                                        Style="{StaticResource HospitalSecondaryButtonStyle}"
+                                        Content="Alternar Guardia"
+                                        Command="{Binding DataContext.AlternarGuardiaMedicoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
