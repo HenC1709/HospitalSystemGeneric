@@ -14,6 +14,7 @@ Aplicación de escritorio para Windows desarrollada con **.NET 10**, **C# 14**, 
 - **Menú Pacientes**:
   - Registro obligatorio con **Cédula**, **Nombres** y **Síntomas**, además de sexo, convenio, asignación de médico del día y asignación opcional de cama libre.
   - Opción integrada para generar **salida inmediata a laboratorio** durante el ingreso si la condición clínica lo requiere, o derivar pacientes ya ingresados y otorgar **Alta Médica** (liberando su cama automáticamente).
+  - **Exportación de Expediente PDF e Impresión de Ticket de Salida**: botones por fila y en barra superior con diálogo modal animado y folio oficial del hospital.
 - **Menú Médicos**:
   - Visualización filtrada de **Médicos del Día** y plantilla médica completa.
   - Botón rápido para incorporar o retirar médicos de la guardia del día y formulario de alta de nuevos especialistas.
@@ -38,8 +39,15 @@ La solución (`HospitalSystem.slnx`) sigue una estructura **Clean Architecture**
 1. **`HospitalSystem.Core`**: Entidades del dominio (`Paciente`, `Medico`, `Sala`, `Cama`, `Atencion`, `Laboratorio`, `SalidaLaboratorio`, etc.), enumeraciones clínicas, excepciones de dominio y extensiones.
 2. **`HospitalSystem.Application`**: DTOs inmutables (`record`), contrato `IHospitalRepository` y casos de uso en `HospitalServices`.
 3. **`HospitalSystem.Infrastructure`**: Acceso a datos con `MySqlConnector` (`HospitalRepository`), consumo de vistas, funciones y procedimientos almacenados de MySQL, ejecutor de scripts SQL y respaldo desconectado en memoria (`HospitalDataStore`).
-4. **`HospitalSystem.Desktop`**: Interfaz gráfica WPF con patrón **MVVM** (`CommunityToolkit.Mvvm`) y tema moderno Fluent oscuro mediante **WPF-UI**, evitando diccionarios XAML extensos de estilos manuales.
+4. **`HospitalSystem.Desktop`**: Interfaz gráfica WPF con patrón **MVVM** (`CommunityToolkit.Mvvm`, dividida modularmente en `MainViewModel.Dashboard`, `Pacientes`, `Medicos` y `Laboratorios`) y tema moderno mediante **WPF-UI**.
 5. **`HospitalSystem.Console`**: Utilidad ligera por línea de comandos para verificar rápidamente la conexión a MySQL y los indicadores del hospital.
+6. **`HospitalSystem.Tests`**: Suite de pruebas unitarias automatizadas con **xUnit** para validar concurrencia de camas, protección de altas médicas, validaciones de dominio y derivaciones a laboratorio.
+
+---
+
+## Aviso de Seguridad y Datos Ficticios
+
+> **Importante**: Esta aplicación es un prototipo técnico para pruebas de **MySQL** y **WPF-UI**. No incluye autenticación de usuarios, control de acceso basado en roles (RBAC), cifrado de datos clínicos sensibles (PHI) ni bitácora de auditoría normativa. **Utilízala exclusivamente con datos ficticios de prueba; nunca ingreses información real de pacientes.**
 
 ---
 
@@ -49,10 +57,10 @@ La solución (`HospitalSystem.slnx`) sigue una estructura **Clean Architecture**
   - Palabra clave **`field`** en descriptores de acceso (`get`/`set`) tanto en entidades (`Paciente`, `Medico`) como en propiedades observables de `MainViewModel`, eliminando campos privados redundantes (`_campo`).
   - **Bloques `extension(...)`** en `HospitalDomainExtensions` para definir propiedades de extensión sobre `Sala`, `Medico` y `EstadoSalidaLaboratorio`.
   - **Asignación condicional nula (`?.=`)** al actualizar estados de camas, guardias médicas y atenciones clínicas.
-- **WPF-UI (`Lepoco.WpfUi` 4.3.0) + Identidad Visual Hospitalaria**:
-  - Tema clínico luminoso (`Theme="Light"`) con paleta médica en [HospitalStyles.xaml](./HospitalSystem.Desktop/Themes/HospitalStyles.xaml) (blanco sanitario, celeste clínico `#0284C7`, verde esmeralda `#059669` y ámbar diagnóstico `#D97706`).
+- **WPF-UI (`Lepoco.WpfUi` 4.3.0) + Modo Claro / Modo Oscuro Hospitalario**:
+  - Conmutador instantáneo entre **Modo Claro Clínico** y **Modo Oscuro** desde el Navbar superior mediante `HospitalThemeManager` y recursos dinámicos (`DynamicResource`) en [HospitalStyles.xaml](./HospitalSystem.Desktop/Themes/HospitalStyles.xaml).
   - **Navbar superior hospitalario** con pestañas interactivas, subrayado de sección activa, píldoras KPI en tiempo real e indicador pulsante del estado de MySQL.
-  - **Feedback visual enriquecido y animaciones**: banner clínico animado por severidad (*Éxito*, *Información*, *Advertencia*, *Error*), barra de carga activa, botones con cambio de color y escala suave en **Hover**, tarjetas KPI con elevación animada y transiciones *fade + slide* al cambiar de vista.
+  - **Feedback visual enriquecido y diálogos animados**: banner clínico por severidad, modal animado de confirmación con gradiente hospitalario para exportación de **Expediente PDF** y **Ticket de Salida**, botones con efecto **Hover** y transiciones *fade + slide*.
 
 ---
 

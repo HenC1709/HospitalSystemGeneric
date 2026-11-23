@@ -1,20 +1,24 @@
 using System.Text;
 using HospitalSystem.Core.Entities;
 using HospitalSystem.Core.Enums;
+using HospitalSystem.Core.Exceptions;
 using MySqlConnector;
 
 namespace HospitalSystem.Infrastructure.Persistence;
 
 /// <summary>
 /// Gestiona la factoría de conexiones MySQL, el ejecutor de scripts SQL con soporte DELIMITER
-/// y un almacén en memoria con los mismos datos semilla para pruebas desconectadas.
+/// y un almacén en memoria con control de concurrencia y datos ficticios de demostración.
 /// </summary>
 public sealed class HospitalDataStore
 {
+    private readonly Lock _syncRoot = new();
     private int _nextPacienteId = 4;
     private int _nextAtencionId = 4;
     private int _nextMedicoId = 9;
     private int _nextSalidaId = 4;
+
+    public Lock SyncRoot => _syncRoot;
 
     public string ConnectionString
     {
@@ -114,17 +118,39 @@ public sealed class HospitalDataStore
     public int SiguienteMedicoId() => _nextMedicoId++;
     public int SiguienteSalidaId() => _nextSalidaId++;
 
-    public void LiberarCama(int? camaId)
+    /// <summary>
+    /// Libera la cama únicamente si ninguna otra atención activa la mantiene asignada.
+    /// </summary>
+    public void LiberarCamaSiNoReasignada(int? camaId, int atencionDadaDeAltaId)
     {
+        if (camaId is null)
+            return;
+
+        var ocupadaPorOtraAtencionActiva = Atenciones.Any(a =>
+            a.CamaId == camaId &&
+            a.Id != atencionDadaDeAltaId &&
+            a.Estado != EstadoAtencion.AltaMedica);
+
+        if (ocupadaPorOtraAtencionActiva)
+            return;
+
         var cama = Camas.FirstOrDefault(c => c.Id == camaId);
         // C# 14: asignación condicional nula (?.=)
         cama?.Ocupada = false;
     }
 
-    public void OcuparCama(int? camaId)
+    /// <summary>
+    /// Ocupa una cama validando que exista y esté libre; lanza excepción si ya está ocupada.
+    /// </summary>
+    public void OcuparCamaDisponible(int camaId)
     {
-        var cama = Camas.FirstOrDefault(c => c.Id == camaId);
-        cama?.Ocupada = true;
+        var cama = Camas.FirstOrDefault(c => c.Id == camaId)
+            ?? throw new HospitalValidationException("La cama seleccionada no existe.");
+
+        if (cama.Ocupada)
+            throw new HospitalValidationException("La cama seleccionada ya está ocupada o no existe.");
+
+        cama.Ocupada = true;
     }
 
     private void CargarDatosSemillaMemoria()

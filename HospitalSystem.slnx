@@ -4,4 +4,5 @@
   <Project Path="HospitalSystem.Core/HospitalSystem.Core.csproj" />
   <Project Path="HospitalSystem.Desktop/HospitalSystem.Desktop.csproj" />
   <Project Path="HospitalSystem.Infrastructure/HospitalSystem.Infrastructure.csproj" />
+  <Project Path="HospitalSystem.Tests/HospitalSystem.Tests.csproj" />
 </Solution>

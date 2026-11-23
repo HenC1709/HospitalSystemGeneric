@@ -5,7 +5,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="0,0,6,0">
-            <!-- Tarjeta de Conexión e Inicialización de MySQL -->
+            <!-- Tarjeta de Conexión MySQL -->
             <Border Style="{StaticResource HospitalHoverCardStyle}" Margin="0,0,0,14">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -14,21 +14,21 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <Border Width="30" Height="30" CornerRadius="8" Background="{StaticResource HospitalPrimarySoftBrush}" Margin="0,0,10,0">
-                            <ui:SymbolIcon Symbol="Database24" Foreground="{StaticResource HospitalPrimaryBrush}" />
+                        <Border Width="30" Height="30" CornerRadius="8" Background="{DynamicResource HospitalPrimarySoftBrush}" Margin="0,0,10,0">
+                            <ui:SymbolIcon Symbol="Database24" Foreground="{DynamicResource HospitalPrimaryBrush}" />
                         </Border>
                         <TextBlock
                             Text="Laboratorio de Conexión MySQL"
                             FontSize="15"
                             FontWeight="Bold"
                             VerticalAlignment="Center"
-                            Foreground="{StaticResource HospitalTextPrimaryBrush}" />
-                        <TextBlock Text="  ·  " VerticalAlignment="Center" Foreground="{StaticResource HospitalTextMutedBrush}" />
+                            Foreground="{DynamicResource HospitalTextPrimaryBrush}" />
+                        <TextBlock Text="  ·  " VerticalAlignment="Center" Foreground="{DynamicResource HospitalTextMutedBrush}" />
                         <TextBlock
                             Text="{Binding OrigenDatosTexto}"
                             VerticalAlignment="Center"
                             FontWeight="SemiBold"
-                            Foreground="{StaticResource HospitalTealBrush}" />
+                            Foreground="{DynamicResource HospitalTealBrush}" />
                     </StackPanel>
 
                     <Grid Grid.Row="1">
@@ -57,71 +57,72 @@
                         <Button
                             Grid.Column="2"
                             Style="{StaticResource HospitalPrimaryButtonStyle}"
-                            Command="{Binding InicializarBaseDatosMySqlCommand}">
+                            ToolTip="Elimina las tablas actuales y vuelve a cargar los datos ficticios de demostración"
+                            Command="{Binding RestablecerBaseDatosDemoCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <ui:SymbolIcon Symbol="DatabaseArrowUp20" Margin="0,0,6,0" />
-                                <TextBlock Text="Inicializar BD (Schema + Seed)" />
+                                <TextBlock Text="Restablecer base de datos de demostración" />
                             </StackPanel>
                         </Button>
                     </Grid>
                 </Grid>
             </Border>
 
-            <!-- 4 Tarjetas KPI Hospitalarias con Elevación en Hover -->
+            <!-- 4 Tarjetas KPI Hospitalarias -->
             <UniformGrid Columns="4" Margin="0,0,0,14">
                 <Border Style="{StaticResource HospitalHoverCardStyle}" Margin="0,0,8,0">
                     <StackPanel>
                         <DockPanel>
-                            <TextBlock Text="CAMAS DISPONIBLES" FontSize="11" FontWeight="Bold" Foreground="{StaticResource HospitalTextMutedBrush}" VerticalAlignment="Center" />
-                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Width="32" Height="32" CornerRadius="8" Background="{StaticResource HospitalTealSoftBrush}">
-                                <ui:SymbolIcon Symbol="Bed24" Foreground="{StaticResource HospitalTealBrush}" />
+                            <TextBlock Text="CAMAS DISPONIBLES" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource HospitalTextMutedBrush}" VerticalAlignment="Center" />
+                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Width="32" Height="32" CornerRadius="8" Background="{DynamicResource HospitalTealSoftBrush}">
+                                <ui:SymbolIcon Symbol="Bed24" Foreground="{DynamicResource HospitalTealBrush}" />
                             </Border>
                         </DockPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,8,0,4">
-                            <TextBlock Text="{Binding CamasDisponibles}" FontSize="30" FontWeight="Bold" Foreground="{StaticResource HospitalTealBrush}" />
-                            <TextBlock Text=" / " FontSize="20" Foreground="{StaticResource HospitalTextMutedBrush}" VerticalAlignment="Bottom" />
-                            <TextBlock Text="{Binding CamasTotales}" FontSize="18" Foreground="{StaticResource HospitalTextMutedBrush}" VerticalAlignment="Bottom" />
+                            <TextBlock Text="{Binding CamasDisponibles}" FontSize="30" FontWeight="Bold" Foreground="{DynamicResource HospitalTealBrush}" />
+                            <TextBlock Text=" / " FontSize="20" Foreground="{DynamicResource HospitalTextMutedBrush}" VerticalAlignment="Bottom" />
+                            <TextBlock Text="{Binding CamasTotales}" FontSize="18" Foreground="{DynamicResource HospitalTextMutedBrush}" VerticalAlignment="Bottom" />
                         </StackPanel>
-                        <TextBlock Text="Camas habilitadas sin ocupar" FontSize="12" Foreground="{StaticResource HospitalTextMutedBrush}" />
+                        <TextBlock Text="Camas habilitadas sin ocupar" FontSize="12" Foreground="{DynamicResource HospitalTextMutedBrush}" />
                     </StackPanel>
                 </Border>
 
                 <Border Style="{StaticResource HospitalHoverCardStyle}" Margin="4,0,4,0">
                     <StackPanel>
                         <DockPanel>
-                            <TextBlock Text="CANTIDAD DE SALAS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource HospitalTextMutedBrush}" VerticalAlignment="Center" />
-                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Width="32" Height="32" CornerRadius="8" Background="{StaticResource HospitalPrimarySoftBrush}">
-                                <ui:SymbolIcon Symbol="BuildingMultiple24" Foreground="{StaticResource HospitalPrimaryBrush}" />
+                            <TextBlock Text="CANTIDAD DE SALAS" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource HospitalTextMutedBrush}" VerticalAlignment="Center" />
+                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Width="32" Height="32" CornerRadius="8" Background="{DynamicResource HospitalPrimarySoftBrush}">
+                                <ui:SymbolIcon Symbol="BuildingMultiple24" Foreground="{DynamicResource HospitalPrimaryBrush}" />
                             </Border>
                         </DockPanel>
-                        <TextBlock Text="{Binding CantidadSalas}" FontSize="30" FontWeight="Bold" Foreground="{StaticResource HospitalPrimaryBrush}" Margin="0,8,0,4" />
-                        <TextBlock Text="Pabellones clínicos activos" FontSize="12" Foreground="{StaticResource HospitalTextMutedBrush}" />
+                        <TextBlock Text="{Binding CantidadSalas}" FontSize="30" FontWeight="Bold" Foreground="{DynamicResource HospitalPrimaryBrush}" Margin="0,8,0,4" />
+                        <TextBlock Text="Pabellones clínicos activos" FontSize="12" Foreground="{DynamicResource HospitalTextMutedBrush}" />
                     </StackPanel>
                 </Border>
 
                 <Border Style="{StaticResource HospitalHoverCardStyle}" Margin="4,0,4,0">
                     <StackPanel>
                         <DockPanel>
-                            <TextBlock Text="MÉDICOS DEL DÍA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource HospitalTextMutedBrush}" VerticalAlignment="Center" />
-                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Width="32" Height="32" CornerRadius="8" Background="{StaticResource HospitalSuccessSoftBrush}">
-                                <ui:SymbolIcon Symbol="Stethoscope24" Foreground="{StaticResource HospitalSuccessBrush}" />
+                            <TextBlock Text="MÉDICOS DEL DÍA" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource HospitalTextMutedBrush}" VerticalAlignment="Center" />
+                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Width="32" Height="32" CornerRadius="8" Background="{DynamicResource HospitalSuccessSoftBrush}">
+                                <ui:SymbolIcon Symbol="Stethoscope24" Foreground="{DynamicResource HospitalSuccessBrush}" />
                             </Border>
                         </DockPanel>
-                        <TextBlock Text="{Binding MedicosDelDiaCount}" FontSize="30" FontWeight="Bold" Foreground="{StaticResource HospitalSuccessBrush}" Margin="0,8,0,4" />
-                        <TextBlock Text="Especialistas en guardia hoy" FontSize="12" Foreground="{StaticResource HospitalTextMutedBrush}" />
+                        <TextBlock Text="{Binding MedicosDelDiaCount}" FontSize="30" FontWeight="Bold" Foreground="{DynamicResource HospitalSuccessBrush}" Margin="0,8,0,4" />
+                        <TextBlock Text="Especialistas en guardia hoy" FontSize="12" Foreground="{DynamicResource HospitalTextMutedBrush}" />
                     </StackPanel>
                 </Border>
 
                 <Border Style="{StaticResource HospitalHoverCardStyle}" Margin="8,0,0,0">
                     <StackPanel>
                         <DockPanel>
-                            <TextBlock Text="SALIDAS A LABORATORIO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource HospitalTextMutedBrush}" VerticalAlignment="Center" />
-                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Width="32" Height="32" CornerRadius="8" Background="{StaticResource HospitalWarningSoftBrush}">
-                                <ui:SymbolIcon Symbol="Beaker24" Foreground="{StaticResource HospitalWarningBrush}" />
+                            <TextBlock Text="SALIDAS A LABORATORIO" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource HospitalTextMutedBrush}" VerticalAlignment="Center" />
+                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Width="32" Height="32" CornerRadius="8" Background="{DynamicResource HospitalWarningSoftBrush}">
+                                <ui:SymbolIcon Symbol="Beaker24" Foreground="{DynamicResource HospitalWarningBrush}" />
                             </Border>
                         </DockPanel>
-                        <TextBlock Text="{Binding SalidasLabActivasCount}" FontSize="30" FontWeight="Bold" Foreground="{StaticResource HospitalWarningBrush}" Margin="0,8,0,4" />
-                        <TextBlock Text="Pacientes con estudios activos" FontSize="12" Foreground="{StaticResource HospitalTextMutedBrush}" />
+                        <TextBlock Text="{Binding SalidasLabActivasCount}" FontSize="30" FontWeight="Bold" Foreground="{DynamicResource HospitalWarningBrush}" Margin="0,8,0,4" />
+                        <TextBlock Text="Pacientes con estudios activos" FontSize="12" Foreground="{DynamicResource HospitalTextMutedBrush}" />
                     </StackPanel>
                 </Border>
             </UniformGrid>
@@ -140,7 +141,7 @@
                             Text="Capacidad y Ocupación por Sala"
                             FontSize="15"
                             FontWeight="Bold"
-                            Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                            Foreground="{DynamicResource HospitalTextPrimaryBrush}"
                             Margin="0,0,0,10" />
                         <DataGrid
                             ItemsSource="{Binding Salas}"
@@ -156,13 +157,13 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Margin="4,2">
-                                                <TextBlock Text="{Binding ResumenCapacidad}" FontSize="11" Foreground="{StaticResource HospitalTextPrimaryBrush}" />
+                                                <TextBlock Text="{Binding ResumenCapacidad}" FontSize="11" Foreground="{DynamicResource HospitalTextPrimaryBrush}" />
                                                 <ProgressBar
                                                     Height="6"
                                                     Margin="0,3,0,0"
                                                     Minimum="0"
                                                     Maximum="100"
-                                                    Foreground="{StaticResource HospitalTealBrush}"
+                                                    Foreground="{DynamicResource HospitalTealBrush}"
                                                     Value="{Binding PorcentajeOcupacion, Mode=OneWay}" />
                                             </StackPanel>
                                         </DataTemplate>
@@ -179,7 +180,7 @@
                             Text="Médicos del Día en Guardia Activa"
                             FontSize="15"
                             FontWeight="Bold"
-                            Foreground="{StaticResource HospitalTextPrimaryBrush}"
+                            Foreground="{DynamicResource HospitalTextPrimaryBrush}"
                             Margin="0,0,0,10" />
                         <DataGrid
                             ItemsSource="{Binding MedicosDelDia}"
@@ -193,8 +194,8 @@
                                 <DataGridTemplateColumn Header="Estado" Width="95">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Background="{StaticResource HospitalSuccessSoftBrush}" CornerRadius="10" Padding="8,2" HorizontalAlignment="Left">
-                                                <TextBlock Text="Guardia Hoy" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource HospitalSuccessBrush}" />
+                                            <Border Background="{DynamicResource HospitalSuccessSoftBrush}" CornerRadius="10" Padding="8,2" HorizontalAlignment="Left">
+                                                <TextBlock Text="Guardia Hoy" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource HospitalSuccessBrush}" />
                                             </Border>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
